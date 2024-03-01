@@ -45,7 +45,6 @@ import { RootObject, ContactPerson } from "./types";
                     if (json[i].id === choiceId) {
                         console.log(json[i]);
                     }
-
                 }
             }
 
