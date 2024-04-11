@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= title %></title>
+</head>
+<body>
+    
+    <header>
+        <h2>Compassionate Animal Shelter Management System</h2>
+    </header>
+    
+    <aside>
+        <section class="aside-top">
+            <h1>Com</h1>
+            <h2>PASS</h2>
+        </section>
+        <section class="aside-bottom">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/animalshelter">Animal shelter</a></li>
+                <li><a href="#">Contact persons</a></li>
+            </ul>
+        </section>
+
+    </aside>
+    <main>
+        <section class="main-top">
+            <form action="/?sortField=<%= sortField %>&sortDirection=<%= sortDirection %>" method="get">
+                <input type="text" name="q" id="" value="<%= q %>">
+                <input type="hidden" name="sortField" value="<%= sortField %>">
+                <input type="hidden" name="sortDirection" value="<%= sortDirection %>">
+                <button>Search</button>
+            </form>
+        </section>
+        <section class="main-top2">
+            <form action="" method="get">
+                <a href="/?sortField=id&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Id
+                    <% if (sortField === 'id') { %>
+                        <%= sortDirection === 'asc' ? '▲' : '▼' %>
+                    <% } %></a>
+                <a href="/?sortField=name&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Name
+                    <% if (sortField === 'name') { %>
+                        <%= sortDirection === 'asc' ? '▲' : '▼' %>
+                    <% } %></a>
+                <a href="/?sortField=capacity&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Capacity
+                    <% if (sortField === 'capacity') { %>
+                        <%= sortDirection === 'asc' ? '▲' : '▼' %>
+                    <% } %></a>
+            </form>
+        </section>
+        <section class="main-body">
+            <% for (let i = 0; i < animalShelterJson.length; i++) { %>
+            <article class="card">
+                <a href="/animalshelter?selectedShelter=<%= animalShelterJson[i].id -1 %>">
+                    <section>
+                        <h2>Id:</h2>
+                        <p><%= animalShelterJson[i].id %></p>
+                    </section>
+                    <section>
+                        <h2>Name:</h2>
+                        <p><%= animalShelterJson[i].name %></p>
+                    </section>
+                    <section>
+                        <h2>Capacity:</h2>
+                        <p><%= animalShelterJson[i].capacity %></p>
+                    </section>
+                    <section>
+                        <h2>At Capacity:</h2>
+                        <input type="checkbox" name="" id="" <%= animalShelterJson[i].atCapacity === true ? 'checked' : '' %> >
+                    </section>
+                </a>
+            </article>
+            <% } %>
+        </section>
+    </main>
+</body>
+</html>

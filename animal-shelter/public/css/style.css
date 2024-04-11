@@ -1,0 +1,148 @@
+/* General Styles */
+html {
+  box-sizing: border-box;
+}
+body {
+  font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  background-color: #f4f4f4;
+  color: rgb(51, 51, 51);
+  display: grid;
+  grid-template-areas: 
+      'aside header'
+      'aside main';
+  grid-template-columns: 1fr 5fr;
+  grid-template-rows: auto 1fr;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+a:hover {
+  text-shadow: 0 0 10px #fff;
+  transition: text-shadow 0.3s ease;
+}
+
+h1 {
+  font-size: x-large;
+}
+h2 {
+  font-size: large;
+}
+input, button, select {
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px;
+  font-size: 16px;
+}
+button:hover {
+  box-shadow: 0 0 10px black;
+  transition: box-shadow 0.3s ease;
+}
+
+input[type="checkbox"] {
+  appearance: checkbox; 
+  -webkit-appearance: checkbox; 
+  -moz-appearance: checkbox; 
+  box-shadow: none;
+}
+
+/* Adding arrow for the dropdown menu */
+select {
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>'); /* Arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 8px center; /* Position the arrow on the right */
+  background-size: 16px; /* Size of the arrow */
+  cursor: pointer;
+}
+
+/* Page Styles */
+header {
+  grid-area: header;
+  padding: 13px;
+  background-color: lavender;
+}
+
+aside {
+  grid-area: aside;
+}
+.aside-top {
+  background-color: rgb(24, 85, 135);
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+.aside-top h1 {
+  color:darkseagreen;
+}
+
+.aside-bottom {
+  background-color:rgb(9, 42, 69);
+  color: #fff;
+  height: 100%;
+  padding: 30px;
+}
+
+.aside-bottom ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+main {
+  grid-area: main;
+}
+
+.main-top {
+  padding: 20px;
+}
+
+.main-top2 {
+  background-color: lavender;
+  padding: 15px;
+}
+
+.main-top2 form {
+  display: flex;
+  justify-content: space-around;
+}
+
+.main-body {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.main-body article section img {
+  width: 150px;
+  margin-bottom: 5px;
+}
+.main-body article section a {
+  padding: 30px;
+
+}
+
+/* Card Styles */
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.card a section, .card section {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.card a section p, .card section p {
+  color: dimgrey;
+  font-size:large;
+}

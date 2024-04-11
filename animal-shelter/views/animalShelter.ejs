@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <title><%= title %></title>
+</head>
+<body>
+    
+    <header>
+        <h2>Compassionate Animal Shelter Management System</h2>
+    </header>
+    
+    <aside>
+        <section class="aside-top">
+            <h1>Com</h1>
+            <h2>PASS</h2>
+        </section>
+        <section class="aside-bottom">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/animalshelter">Animal shelter</a></li>
+                <li><a href="#">Contact persons</a></li>
+            </ul>
+        </section>
+
+    </aside>
+    <main>
+        <section class="main-top">
+            <form action="" method="get">
+                <select name="selectedShelter" onchange="this.form.submit()">
+                    <% for (let i = 0; i < animalShelterJson.length; i++) { %>
+                        <option value="<%= i %>" <% if (selectedShelterIndex === i) { %>selected<% } %>> <%= animalShelterJson[i].name %> </option>
+                    <% } %>
+                </select>
+            </form>
+            
+        </section>
+        <section class="main-body">
+            <article class="card" style="width: 80%">
+                <section>
+                    <img src="<%= selectedShelter.photoURL %>" alt="">
+                </section>
+                <section>
+                    <h2>Id:</h2>
+                    <p><%= selectedShelter.id %></p>
+                </section>
+                <section>
+                    <h2>Name:</h2>
+                    <p><%= selectedShelter.name %></p>
+                </section>
+                <section>
+                    <h2>Description:</h2>
+                    <p><%= selectedShelter.description %></p>
+                </section>
+                <section>
+                    <h2>Capacity:</h2>
+                    <p><%= selectedShelter.capacity %></p>
+                </section>
+                <section>
+                    <h2>At Capacity:</h2>
+                    <input type="checkbox" name="" id="" <%= selectedShelter.atCapacity === true ? 'checked' : '' %> >
+                </section>
+                <section>
+                    <h2>Opening Date:</h2>
+                    <p><%= selectedShelter.openingDate %></p>
+                </section>
+                <section>
+                    <h2>Welcome Animals:</h2>
+                    <p><%= selectedShelter.welcomeAnimals.join(", ") %></p>
+                </section>
+                <section>
+                    <h2>Health Status:</h2>
+                    <p><%= selectedShelter.healthStatus %></p>
+                </section>
+                <section>
+                    <h2>Contact Person:</h2>
+                    <a href="">
+                        <article class="card" style="width: 100%">
+                            <p>Name: <%= selectedShelter.contactPerson.name %></p>
+                            <p>Position: <%= selectedShelter.contactPerson.position %></p>
+                            <p>Email: <%= selectedShelter.contactPerson.email %></p>
+                            <p>Phone: <%= selectedShelter.contactPerson.phone %></p>
+                        </article>
+                    </a>
+                </section>
+            </article>
+            
+        </section>
+        
+    </main>
+</body>
+</html>

@@ -1,59 +1,64 @@
-import readline from 'readline-sync';
+import express, { Express } from "express";
+import dotenv from "dotenv";
+import path from "path";
+import {animalShelterJson} from "./data"
+import { AnimalShelter } from "./types";
 
-import { RootObject, ContactPerson } from "./types";
+dotenv.config();
 
-(async function () {
-    try {
-        let choice : number;
+const app : Express = express();
 
-        const response = await fetch('https://raw.githubusercontent.com/DennisDuckaertAp/AnimalShelterData/main/animalShelter.json');
-        
-        if (response.status === 404) throw new Error('Not found');
-        if (response.status === 500) throw new Error('Internal server error');
+app.set("view engine", "ejs");
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, "public")));
+app.set('views', path.join(__dirname, "views"));
 
-        const json : RootObject[] = await response.json();
+app.set("port", process.env.PORT || 3000);
 
-        do {
-            console.log("---------------------------------------------------");
-            console.log("| Welcome to the Animal Shelter Management System |");
-            console.log("---------------------------------------------------");
-            console.log();
-            const choiceMenu : string[] = ["View all data", "Filter by ID", "Exit"]
-    
-            for (let i = 0; i < choiceMenu.length; i++) {
-                console.log(`${i+1} ${choiceMenu[i]}`);
-            }
-            console.log()
+app.get("/", (req, res) => {
+    const q = typeof req.query.q === 'string' ? req.query.q : "";
+ 
+    let filteredAnimalShelters : AnimalShelter[] = [...animalShelterJson];
+    filteredAnimalShelters = filteredAnimalShelters.filter(shelter => shelter.name.toLowerCase().includes(q.toLowerCase()))
 
-            choice  = readline.questionInt("Please enter your choice: ");
+    const sortField = typeof req.query.sortField === "string" ? req.query.sortField : "id";
+    let sortDirection = typeof req.query.sortDirection === "string" ? req.query.sortDirection : "asc";
 
-            if (isNaN(choice) || choice < 1 || choice > choiceMenu.length) {
-                console.log(`Invalid choice. Please enter a number between 1 and ${choiceMenu.length}`);
-            }
-            else if (choice === 1) {
-                for (let i = 0; i < json.length; i++) {
-                    console.log(`- ${json[i].name} (${json[i].id})`);
-                    
-                }
-                
-            }
-            else if (choice === 2) {
+    let sortedAnimalShelters = [...filteredAnimalShelters].sort((a, b) => {
+        if (sortField === "name") {
+            return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+        } else if (sortField === "id") {
+            return sortDirection === "asc" ? a.id - b.id : b.id - a.id;
+        } else if (sortField === "capacity") {
+            return sortDirection === "asc" ? a.capacity - b.capacity : b.capacity - a.capacity;
+        } else {
+            return 0;
+        }
+    });
 
-            let choiceId : number = readline.questionInt("Please enter the ID you want to filter by: ")
+    res.render("index", {
+        title: "Compassionate Animal Shelter Management System",
+        animalShelterJson : sortedAnimalShelters,
+        q : q,
+        sortDirection : sortDirection,
+        sortField :  sortField
+    })
+});
 
-                for (let i = 0; i < json.length; i++) {
-                    if (json[i].id === choiceId) {
-                        console.log(json[i]);
-                    }
-                }
-            }
+app.get("/animalshelter", (req, res) => {
+    const selectedShelterIndex = parseInt(typeof req.query.selectedShelter === 'string' ? req.query.selectedShelter : "0")
 
-        } while (choice !== 3);
-        
-    } catch (error: any) {
-        console.log(error);
-    }
-})();
+    const selectedShelter = animalShelterJson[selectedShelterIndex]
 
-export {}
+    res.render("animalShelter", {
+        title: "Animal Shelter Details",
+        animalShelterJson : animalShelterJson,
+        selectedShelter : selectedShelter,
+        selectedShelterIndex : selectedShelterIndex
+    })
+})
 
+app.listen(app.get("port"), () => {
+    console.log("Server started on http://localhost:" + app.get('port'));
+});
