@@ -29,6 +29,7 @@ h2 {
   font-size: large;
 }
 input, button, select {
+  cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -54,6 +55,7 @@ select {
   background-position: right 8px center; /* Position the arrow on the right */
   background-size: 16px; /* Size of the arrow */
   cursor: pointer;
+  padding-right: 30px;
 }
 
 /* Page Styles */
@@ -114,6 +116,15 @@ main {
   gap: 30px;
 }
 
+.main-body a button {
+  height: 40px;
+  background-color: lavender;
+  color:dimgrey;
+}
+
+.main-body a button:hover {
+  box-shadow: 0 0 2px black;
+}
 .main-body article section img {
   width: 150px;
   margin-bottom: 5px;
@@ -145,4 +156,63 @@ main {
 .card a section p, .card section p {
   color: dimgrey;
   font-size:large;
+}
+
+/* Modal Styles */
+.Modal {
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  overflow: auto;
+  display: none;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.ModalContent {
+  background-color: white;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  padding: 20px;
+  border-radius: 8px;
+  width: 500px;
+  margin: 200px auto; /* Center the modal */
+}
+
+.ModalContent section {
+  display: flex;
+  gap: 5px;
+}
+.ModalContent section h2 {
+  font-size: x-large;
+}
+.ModalContent section p {
+  font-size: x-large;
+}
+
+.ModalClose {
+  transition: color 0.25s;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 20px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: black;
+}
+
+.ModalClose:hover, .ModalClose:focus {
+  color: darkgrey;
 }

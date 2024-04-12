@@ -1,8 +1,8 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
-import {animalShelterJson} from "./data"
-import { AnimalShelter } from "./types";
+import {animalShelterJson, contactPersonJson} from "./data"
+import { AnimalShelter, ContactPerson } from "./types";
 
 dotenv.config();
 
@@ -56,6 +56,27 @@ app.get("/animalshelter", (req, res) => {
         animalShelterJson : animalShelterJson,
         selectedShelter : selectedShelter,
         selectedShelterIndex : selectedShelterIndex
+    })
+})
+
+
+app.get("/contactpersons", (req, res) => {
+
+    const q = parseInt(typeof req.query.q === 'string' ? req.query.q : "");
+
+    let filteredContactPersons : ContactPerson[] = [...contactPersonJson];
+    filteredContactPersons = filteredContactPersons.filter(person => person.id === q);
+
+    if (!isNaN(q)) {
+        filteredContactPersons = contactPersonJson.filter(person => person.id === q);
+    } else {
+        filteredContactPersons = [...contactPersonJson];
+    }
+
+    res.render("contactPersons", {
+        title: "Contact Person Details",
+        contactPersonJson : contactPersonJson,
+        filteredContactPersons : filteredContactPersons
     })
 })
 

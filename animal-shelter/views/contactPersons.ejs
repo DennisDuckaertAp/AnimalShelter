@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/js/modal.js" defer type="module"></script>
+    <title><%= title %></title>
+</head>
+<body>
+    
+    <header>
+        <h2>Compassionate Animal Shelter Management System</h2>
+    </header>
+    
+    <aside>
+        <section class="aside-top">
+            <h1>Com</h1>
+            <h2>PASS</h2>
+        </section>
+        <section class="aside-bottom">
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/animalshelter">Animal shelter</a></li>
+                <li><a href="/contactpersons">Contact persons</a></li>
+            </ul>
+        </section>
+
+    </aside>
+    <main>
+
+        <section class="main-body">
+            <% for (let i = 0; i < filteredContactPersons.length; i++) { %>
+            <article class="card" style="width: 400px">
+                <a href="#" class="ModalTrigger" data-index="<%= i %>">
+                    <section>
+                        <h2>Id:</h2>
+                        <p><%= filteredContactPersons[i].id %></p>
+                    </section>
+                    <section>
+                        <h2>Name:</h2>
+                        <p><%= filteredContactPersons[i].name %></p>
+                    </section>
+                    <section>
+                        <h2>Position:</h2>
+                        <p><%= filteredContactPersons[i].position %></p>
+                    </section>
+                    <section>
+                        <h2>Email:</h2>
+                        <p><%= filteredContactPersons[i].email %></p>
+                    </section>
+                    <section>
+                        <h2>Phone:</h2>
+                        <p><%= filteredContactPersons[i].phone %></p>
+                    </section>
+                </a>
+            </article>
+            <% } %>
+
+            <% if (filteredContactPersons.length !== contactPersonJson.length) { %>
+                <!-- Show the "Show All" button only if data is filtered -->
+                <a href="/contactpersons">
+                    <button>Show all</button>
+                </a>
+            <% } %>
+        </section>
+
+        
+        <div class="Modal">
+            <div class="ModalContent">
+            </div>
+        </div>
+        
+    </main>
+</body>
+</html>

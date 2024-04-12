@@ -1,19 +1,24 @@
-import { AnimalShelter } from "./types";
+import { AnimalShelter, ContactPerson } from "./types";
 
-export let animalShelterJson : AnimalShelter[];
+export let animalShelterJson: AnimalShelter[];
+export let contactPersonJson: ContactPerson[];
 
-let getData = async() => {
+let getData = async () => {
     try {
-        const response = await fetch('https://raw.githubusercontent.com/DennisDuckaertAp/AnimalShelterData/main/animalShelter.json');
-        
-        if (response.status === 404) throw new Error('Not found');
-        if (response.status === 500) throw new Error('Internal server error');
+        const animalShelterResponse = await fetch('https://raw.githubusercontent.com/DennisDuckaertAp/AnimalShelterData/main/animalShelter.json');
+        if (!animalShelterResponse.ok) {
+            throw new Error(`Animal Shelter data fetch failed with status: ${animalShelterResponse.status}`);
+        }
+        animalShelterJson = await animalShelterResponse.json();
 
-        animalShelterJson = await response.json();
-    }
-    catch (e) {
-        alert('Er is een fout opgetreden bij het laden van de gegevens. Probeer het later opnieuw.');
-        console.error(e);
+        const contactPersonResponse = await fetch('https://raw.githubusercontent.com/DennisDuckaertAp/AnimalShelterData/main/contactPerson.json');
+        if (!contactPersonResponse.ok) {
+            throw new Error(`Contact Person data fetch failed with status: ${contactPersonResponse.status}`);
+        }
+        contactPersonJson = await contactPersonResponse.json();
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        alert(error);
     }
 };
 

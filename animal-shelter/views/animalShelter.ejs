@@ -22,7 +22,7 @@
             <ul>
                 <li><a href="/">Home</a></li>
                 <li><a href="/animalshelter">Animal shelter</a></li>
-                <li><a href="#">Contact persons</a></li>
+                <li><a href="/contactpersons">Contact persons</a></li>
             </ul>
         </section>
 
@@ -77,7 +77,7 @@
                 </section>
                 <section>
                     <h2>Contact Person:</h2>
-                    <a href="">
+                    <a href="/contactpersons?q=<%= selectedShelter.contactPerson.id %>">
                         <article class="card" style="width: 100%">
                             <p>Name: <%= selectedShelter.contactPerson.name %></p>
                             <p>Position: <%= selectedShelter.contactPerson.position %></p>
