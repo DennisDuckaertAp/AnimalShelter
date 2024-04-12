@@ -29,15 +29,17 @@ h2 {
   font-size: large;
 }
 input, button, select {
-  cursor: pointer;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.2);
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 8px;
   font-size: 16px;
 }
+button {
+  cursor: pointer;
+}
 button:hover {
-  box-shadow: 0 0 10px black;
+  box-shadow: 0 0 5px black;
   transition: box-shadow 0.3s ease;
 }
 
@@ -122,9 +124,6 @@ main {
   color:dimgrey;
 }
 
-.main-body a button:hover {
-  box-shadow: 0 0 2px black;
-}
 .main-body article section img {
   width: 150px;
   margin-bottom: 5px;
@@ -188,7 +187,7 @@ main {
   padding: 20px;
   border-radius: 8px;
   width: 500px;
-  margin: 200px auto; /* Center the modal */
+  margin: 200px auto;
 }
 
 .ModalContent section {
@@ -215,4 +214,35 @@ main {
 
 .ModalClose:hover, .ModalClose:focus {
   color: darkgrey;
+}
+
+/* Media Query */
+.cardAnimalShelter {
+  width: 80%;
+}
+.system-description {
+  display: none; 
+}
+@media (max-width: 768px) {
+  .cardAnimalShelter {
+    width: 100%;
+  }
+  .system-description {
+    display: block; /* Show the description paragraph on screens with max-width of 768px */
+    color: white; /* Change text color */
+    font-size: 14px; /* Adjust font size */
+    margin: 5px 0 0 5px;
+  }
+  .cardAnimalShelter section {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 0px;
+  }
+  header {
+    display: none;
+  }
+  body {
+    display: block;
+  }
 }
