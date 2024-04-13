@@ -21,7 +21,9 @@ a:hover {
   text-shadow: 0 0 10px #fff;
   transition: text-shadow 0.3s ease;
 }
-
+a.active {
+  border-bottom: 2px solid #fff;
+}
 h1 {
   font-size: x-large;
 }
@@ -41,6 +43,9 @@ button {
 button:hover {
   box-shadow: 0 0 5px black;
   transition: box-shadow 0.3s ease;
+}
+button:active {
+  box-shadow: inset 0 0 5px black;
 }
 
 input[type="checkbox"] {
@@ -224,13 +229,19 @@ main {
   display: none; 
 }
 @media (max-width: 768px) {
+  header {
+    display: none;
+  }
+  body {
+    display: block;
+  }
   .cardAnimalShelter {
     width: 100%;
   }
   .system-description {
-    display: block; /* Show the description paragraph on screens with max-width of 768px */
-    color: white; /* Change text color */
-    font-size: 14px; /* Adjust font size */
+    display: block;
+    color: white; 
+    font-size: 14px; 
     margin: 5px 0 0 5px;
   }
   .cardAnimalShelter section {
@@ -239,10 +250,27 @@ main {
     flex-wrap: wrap;
     gap: 0px;
   }
-  header {
-    display: none;
+  .ModalContent {
+    width: 350px;
   }
-  body {
-    display: block;
+  .ModalContent section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
+  }
+  .ModalContent section h2 {
+    font-size: larger;
+    margin-right: 5px;
+  }
+  .ModalContent section p {
+    font-size: larger;
+  }
+  .card a section h2 {
+    margin-right: 5px;
+  }
+  .card a section, .card section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0px;
   }
 }

@@ -71,12 +71,12 @@ for (let i = 0; i < buttons.length; i++) {
 }
 
 // click event for closing modal (X button)
-for (let i = 0; i < spans.length; i++) {
-    spans[i].onclick = function(e) {
-        e.preventDefault();
-        closeModal(i);
-    };
-}
+//for (let i = 0; i < spans.length; i++) {
+//    spans[i].onclick = function(e) {
+//        e.preventDefault();
+//        closeModal(i);
+//    };
+//}
 
 // click event for closing modal (dark background)
 window.onclick = function(event) {

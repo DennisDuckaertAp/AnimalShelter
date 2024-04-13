@@ -1,31 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/style.css">
-
-    <script src="/js/modal.js" defer type="module"></script>
-    <title><%= title %></title>
-</head>
-<body>
-    
-    <header>
-        <h2>Compassionate Animal Shelter Management System</h2>
-    </header>
-    
-    <aside>
-        <section class="aside-top">
-            <h1>Com</h1>
-            <h2>PASS</h2>
-            <p class="system-description">Compassionate Animal Shelter Management System</p>
-        </section>
-        <section class="aside-bottom">
-            <ul>
+<%- include("partials/header") %>
+    <%- include("partials/aside") %>
                 <li><a href="/">Home</a></li>
                 <li><a href="/animalshelter">Animal shelter</a></li>
-                <li><a href="/contactpersons">Contact persons</a></li>
+                <li><a href="/contactpersons" class="active">Contact persons</a></li>
             </ul>
         </section>
 

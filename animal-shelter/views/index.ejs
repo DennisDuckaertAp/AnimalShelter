@@ -1,27 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/reset.css">
-    <link rel="stylesheet" href="/css/style.css">
-    <title><%= title %></title>
-</head>
-<body>
-    
-    <header>
-        <h2>Compassionate Animal Shelter Management System</h2>
-    </header>
-    
-    <aside>
-        <section class="aside-top">
-            <h1>Com</h1>
-            <h2>PASS</h2>
-            <p class="system-description">Compassionate Animal Shelter Management System</p>
-        </section>
-        <section class="aside-bottom">
-            <ul>
-                <li><a href="/">Home</a></li>
+<%- include("partials/header") %>
+    <%- include("partials/aside") %>
+                <li><a href="/" class="active">Home</a></li>
                 <li><a href="/animalshelter">Animal shelter</a></li>
                 <li><a href="/contactpersons">Contact persons</a></li>
             </ul>
@@ -71,7 +50,7 @@
                     </section>
                     <section>
                         <h2>At Capacity:</h2>
-                        <input type="checkbox" name="" id="" <%= animalShelterJson[i].atCapacity === true ? 'checked' : '' %> >
+                        <input type="checkbox" name="" id="" <%= animalShelterJson[i].atCapacity === true ? 'checked' : '' %> onclick="return false">
                     </section>
                 </a>
             </article>
