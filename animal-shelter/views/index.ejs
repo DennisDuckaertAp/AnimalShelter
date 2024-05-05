@@ -1,7 +1,7 @@
 <%- include("partials/header") %>
     <%- include("partials/aside") %>
                 <li><a href="/" class="active">Home</a></li>
-                <li><a href="/animalshelter">Animal shelter</a></li>
+                <li><a href="/animalshelter/1">Animal shelter</a></li>
                 <li><a href="/contactpersons">Contact persons</a></li>
             </ul>
         </section>
@@ -18,15 +18,15 @@
         </section>
         <section class="main-top2">
             <form action="" method="get">
-                <a href="/?sortField=id&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Id
+                <a href="/?sortField=id&sortDirection=<%= sortField === 'id' && sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Id
                     <% if (sortField === 'id') { %>
                         <%= sortDirection === 'asc' ? '▲' : '▼' %>
                     <% } %></a>
-                <a href="/?sortField=name&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Name
+                <a href="/?sortField=name&sortDirection=<%= sortField === 'name' && sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Name
                     <% if (sortField === 'name') { %>
                         <%= sortDirection === 'asc' ? '▲' : '▼' %>
                     <% } %></a>
-                <a href="/?sortField=capacity&sortDirection=<%= sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Capacity
+                <a href="/?sortField=capacity&sortDirection=<%= sortField === 'capacity' && sortDirection === 'asc' ? 'desc' : 'asc'%>&q=<%= q %>">Capacity
                     <% if (sortField === 'capacity') { %>
                         <%= sortDirection === 'asc' ? '▲' : '▼' %>
                     <% } %></a>
@@ -35,7 +35,7 @@
         <section class="main-body">
             <% for (let i = 0; i < animalShelterJson.length; i++) { %>
             <article class="card">
-                <a href="/animalshelter?selectedShelter=<%= animalShelterJson[i].id -1 %>">
+                <a href="/animalshelter/<%= animalShelterJson[i].id %>">
                     <section>
                         <h2>Id:</h2>
                         <p><%= animalShelterJson[i].id %></p>
@@ -56,6 +56,4 @@
             </article>
             <% } %>
         </section>
-    </main>
-</body>
-</html>
+        <%- include("partials/footer") %>

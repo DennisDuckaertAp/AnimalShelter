@@ -1,7 +1,7 @@
 <%- include("partials/header") %>
     <%- include("partials/aside") %>
                 <li><a href="/">Home</a></li>
-                <li><a href="/animalshelter" class="active">Animal shelter</a></li>
+                <li><a href="/animalshelter/1" class="active">Animal shelter</a></li>
                 <li><a href="/contactpersons">Contact persons</a></li>
             </ul>
         </section>
@@ -9,14 +9,13 @@
     </aside>
     <main>
         <section class="main-top">
-            <form action="" method="get">
-                <select name="selectedShelter" onchange="this.form.submit()">
+            <form action="/animalshelter/<%= selectedShelterIndex %>" method="get">
+                <select name="selectedShelter" onchange="window.location.href='/animalshelter/' + this.value">
                     <% for (let i = 0; i < animalShelterJson.length; i++) { %>
-                        <option value="<%= i %>" <% if (selectedShelterIndex === i) { %>selected<% } %>> <%= animalShelterJson[i].name %> </option>
+                        <option value="<%= i+1 %>" <% if (selectedShelterIndex === i+1) { %>selected<% } %>> <%= animalShelterJson[i].name %> </option>
                     <% } %>
                 </select>
             </form>
-            
         </section>
         <section class="main-body">
             <article class="card  cardAnimalShelter">
@@ -66,10 +65,11 @@
                         </article>
                     </a>
                 </section>
+                <section>
+                    <button>
+                        <a href="/editShelter/<%= selectedShelter.id %>" class="edit-button">Edit Shelter</a>
+                    </button>
+                </section>
             </article>
-            
-        </section>
-        
-    </main>
-</body>
-</html>
+        </section>        
+        <%- include("partials/footer") %>

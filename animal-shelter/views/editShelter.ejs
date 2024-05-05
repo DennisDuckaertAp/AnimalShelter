@@ -1,0 +1,58 @@
+<%- include("partials/header") %>
+    <%- include("partials/aside") %>
+                <li><a href="/">Home</a></li>
+                <li><a href="/animalshelter/1">Animal shelter</a></li>
+                <li><a href="/contactpersons">Contact persons</a></li>
+            </ul>
+        </section>
+    </aside>
+    <main>
+        <section class="main-top">
+            <h2>Modify Shelter Information</h2><br>
+            <p class="edit-description">You can edit the details of <span><%= selectedShelter.name %></span> below:</p>
+        </section>
+        <section class="main-body main-edit">
+            <form action="/editshelter/<%= selectedShelter.id %>" method="post">
+                <section>
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="<%= selectedShelter.name %>">
+                </section>
+                <section>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description"><%= selectedShelter.description %></textarea>
+                </section>
+                <section>
+                    <label for="capacity">Capacity:</label>
+                    <input type="number" id="capacity" name="capacity" value="<%= selectedShelter.capacity %>">
+                </section>
+                <section>
+                    <label for="atCapacity">At Capacity:</label>
+                    <input type="checkbox" id="atCapacity" name="atCapacity" <% if (selectedShelter.atCapacity === true) { %>checked<% } %> >
+                </section>
+                <section>
+                    <label for="openingDate">Opening Date:</label>
+                    <input type="date" id="openingDate" name="openingDate" value="<%= selectedShelter.openingDate %>">
+                </section>
+                <section>
+                    <input type="hidden" id="photoURL" name="photoURL" value="<%= selectedShelter.photoURL %>">
+                </section>
+                <section>
+                    <label for="welcomeAnimals">Welcome Animals:</label>
+                    <textarea id="welcomeAnimals" name="welcomeAnimals"><%= selectedShelter.welcomeAnimals.join(", ") %></textarea>
+                </section>
+                <section>
+                    <label for="healthStatus">Health Status:</label>
+                    <select id="healthStatus" name="healthStatus">
+                        <option value="Good" <% if (selectedShelter.healthStatus === 'Good') { %>selected<% } %> >Good</option>
+                        <option value="Fair" <% if (selectedShelter.healthStatus === 'Fair') { %>selected<% } %> >Fair</option>
+                        <option value="Poor" <% if (selectedShelter.healthStatus === 'Poor') { %>selected<% } %> >Poor</option>
+                    </select>
+                </section>
+                <section>
+                    <input type="hidden" id="contactPersonId" name="contactPersonId" value="<%= selectedShelter.contactPerson.id %>">
+                </section>
+                <button type="submit">Submit</button>
+            </form>
+        </section>
+
+        <%- include("partials/footer") %>
