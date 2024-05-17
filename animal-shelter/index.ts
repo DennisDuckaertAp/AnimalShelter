@@ -3,7 +3,6 @@ import dotenv from "dotenv";
 import path from "path";
 import { AnimalShelter, ContactPerson } from "./types";
 import { connect, getContactPerson, getContactPersonById, getFilteredShelters, getShelters, updateShelterData } from "./database";
-import { contactPersonJson } from "./data";
 
 dotenv.config();
 
@@ -112,7 +111,12 @@ app.post('/editshelter/:id', async (req, res) => {
         res.redirect(`/animalshelter/${shelterId}`)
 })
 
-app.listen(app.get("port"), async () => {
-    await connect();
-    console.log("Server started on http://localhost:" + app.get('port'));
+app.listen(app.get("port"), async() => {
+    try {
+        await connect();
+        console.log("Server started on http://localhost:" + app.get('port'));
+    } catch (e) {
+        console.log(e);
+        process.exit(1); 
+    }
 });

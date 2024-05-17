@@ -1,12 +1,17 @@
 import { Collection, MongoClient } from "mongodb";
-import { AnimalShelter, ContactPerson } from "./types";
+import { AnimalShelter, ContactPerson, User } from "./types";
+import dotenv from "dotenv";
+dotenv.config();
+import bcrypt from "bcrypt";
 
+const saltRounds : number = 10;
 
-const uri = "mongodb+srv://duckaert:duckaert@webontwikkeling.canwgkr.mongodb.net/";
-const client = new MongoClient(uri);
+export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017";
+const client = new MongoClient(MONGODB_URI);
 
 const collectionShelter : Collection<AnimalShelter> = client.db("project").collection<AnimalShelter>("shelters");
 const collectionContactPerson : Collection<ContactPerson> = client.db("project").collection<ContactPerson>("persons");
+export const userCollection = client.db("project").collection<User>("users");
 
 export async function getShelters() {
     return await collectionShelter.find({}).toArray();
@@ -45,6 +50,7 @@ export async function loadContactPersonsFromApi() {
 
 export async function connect() {
     try {
+        await createInitialUsers()
         await client.connect();
         await loadSheltersFromApi()
         await loadContactPersonsFromApi()
@@ -53,6 +59,32 @@ export async function connect() {
     } catch (error) {
         console.error("An error occurred while connecting to the database:", error);
     }
+}
+
+async function createInitialUsers() {
+    if (await userCollection.countDocuments() > 0) {
+        return;
+    }
+    let emailAdmin : string | undefined = process.env.ADMIN_EMAIL;
+    let passwordAdmin : string | undefined = process.env.ADMIN_PASSWORD;
+    let emailUser : string | undefined = process.env.USER_EMAIL;
+    let passwordUser : string | undefined = process.env.USER_PASSWORD;
+    if (emailAdmin === undefined || passwordAdmin === undefined) {
+        throw new Error("ADMIN_EMAIL and ADMIN_PASSWORD must be set in environment");
+    }
+    if (emailUser === undefined || passwordUser === undefined) {
+        throw new Error("USER_EMAIL and USER_PASSWORD must be set in environment");
+    }
+    await userCollection.insertOne({
+        email: emailAdmin,
+        password: await bcrypt.hash(passwordAdmin, saltRounds),
+        role: "ADMIN"
+    });
+    await userCollection.insertOne({
+        email: emailUser,
+        password: await bcrypt.hash(passwordUser , saltRounds),
+        role: "USER"
+    });
 }
 
 async function exit() {

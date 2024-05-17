@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+
 export interface AnimalShelter {
     id : number;
     name : string;
@@ -17,4 +19,11 @@ export interface ContactPerson {
     position : string;
     email : string;
     phone : string;
+}
+
+export interface User {
+    _id?: ObjectId;
+    email: string;
+    password?: string;
+    role: "ADMIN" | "USER";
 }
