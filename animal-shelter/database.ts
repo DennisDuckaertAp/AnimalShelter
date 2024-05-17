@@ -11,6 +11,15 @@ const collectionContactPerson : Collection<ContactPerson> = client.db("project")
 export async function getShelters() {
     return await collectionShelter.find({}).toArray();
 }
+
+export async function getFilteredShelters(filter : string, sortField : string, sortDirection : string) {
+    // await collectionShelter.createIndex({ name: "text" });
+    const sort : -1 | 1 = sortDirection === 'desc' ? -1 : 1 ;
+    const query = filter ? { $text: { $search: filter } } : {};
+
+    return await collectionShelter.find(query).sort({[sortField]: sort}).toArray();
+}
+
 export async function getContactPerson() {
     return await collectionContactPerson.find({}).toArray();
 }

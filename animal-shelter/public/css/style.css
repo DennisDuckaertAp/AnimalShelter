@@ -221,6 +221,14 @@ main {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* 404 Page Styles */
+.card404 {
+  width: 1000px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 /* Modal Styles */
 .Modal {
   background-color: rgba(0, 0, 0, 0.5);
@@ -309,6 +317,9 @@ main {
     flex-wrap: wrap;
     gap: 0px;
   }
+  .cardAnimalShelter section button{
+    width: 155px;
+  }
   .ModalContent {
     width: 350px;
   }
@@ -343,6 +354,6 @@ main {
     font-size: large; 
   }
   .main-top h2 {
-
     margin: 0px;
+  }
 }

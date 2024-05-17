@@ -2,7 +2,7 @@ import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
 import { AnimalShelter, ContactPerson } from "./types";
-import { connect, getContactPerson, getContactPersonById, getShelters, updateShelterData } from "./database";
+import { connect, getContactPerson, getContactPersonById, getFilteredShelters, getShelters, updateShelterData } from "./database";
 import { contactPersonJson } from "./data";
 
 dotenv.config();
@@ -18,28 +18,12 @@ app.set('views', path.join(__dirname, "views"));
 app.set("port", process.env.PORT || 3000);
 
 app.get("/", async (req, res) => {
-    let animalShelterJson : AnimalShelter[] = await getShelters();
-    
-    const q = typeof req.query.q === 'string' ? req.query.q : "";
- 
-    let filteredAnimalShelters : AnimalShelter[] = [...animalShelterJson];
-    filteredAnimalShelters = filteredAnimalShelters.filter(shelter => shelter.name.toLowerCase().includes(q.toLowerCase()))
 
+    const q = typeof req.query.q === 'string' ? req.query.q : "";
     const sortField = typeof req.query.sortField === "string" ? req.query.sortField : "id";
     let sortDirection = typeof req.query.sortDirection === "string" ? req.query.sortDirection : "asc";
 
-    let sortedAnimalShelters = [...filteredAnimalShelters].sort((a, b) => {
-        if (sortField === "name") {
-            return sortDirection === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
-        } else if (sortField === "id") {
-            return sortDirection === "asc" ? a.id - b.id : b.id - a.id;
-        } else if (sortField === "capacity") {
-            return sortDirection === "asc" ? a.capacity - b.capacity : b.capacity - a.capacity;
-        } else {
-            return 0;
-        }
-    });
-
+    let sortedAnimalShelters = await getFilteredShelters(q, sortField, sortDirection);
     res.render("index", {
         title: "Compassionate Animal Shelter Management System",
         animalShelterJson : sortedAnimalShelters,
@@ -54,9 +38,9 @@ app.get("/animalshelter/:id", async (req, res) => {
 
     const selectedShelterIndex = parseInt(req.params.id)
 
-    // if
-    console.log(selectedShelterIndex)
-
+    if (isNaN(selectedShelterIndex) || selectedShelterIndex < 1 || selectedShelterIndex > animalShelterJson.length) {
+        return res.status(404).render("404", { title: "404 - Page Not Found" });
+    }
     const selectedShelter = animalShelterJson[selectedShelterIndex-1]
 
     res.render("animalShelter", {
@@ -92,6 +76,10 @@ app.get("/editshelter/:id", async (req, res) => {
     let animalShelterJson : AnimalShelter[] = await getShelters();
 
     const selectedShelterIndex = parseInt(req.params.id)
+
+    if (isNaN(selectedShelterIndex) || selectedShelterIndex < 1 || selectedShelterIndex > animalShelterJson.length) {
+        return res.status(404).render("404", { title: "404 - Page Not Found" });
+    }
 
     const selectedShelter = animalShelterJson[selectedShelterIndex-1]
     res.render("editShelter", {
