@@ -32,6 +32,15 @@
                     <% } %></a>
             </form>
         </section>
+        <section>
+            <% if (!message) { %>
+                <br>
+            <% } %>  
+            <% if (message) { %>
+                <p class="<%= message.type %>"><%= message.message %></p>
+            <% } %>   
+        </section>
+
         <section class="main-body">
             <% for (let i = 0; i < animalShelterJson.length; i++) { %>
             <article class="card">

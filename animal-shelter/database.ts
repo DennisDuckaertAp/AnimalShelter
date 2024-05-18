@@ -9,10 +9,12 @@ const saltRounds : number = 10;
 export const MONGODB_URI = process.env.MONGODB_URI ?? "mongodb://localhost:27017";
 const client = new MongoClient(MONGODB_URI);
 
+/* Collections */
 const collectionShelter : Collection<AnimalShelter> = client.db("project").collection<AnimalShelter>("shelters");
 const collectionContactPerson : Collection<ContactPerson> = client.db("project").collection<ContactPerson>("persons");
 export const userCollection = client.db("project").collection<User>("users");
 
+/* Get data */
 export async function getShelters() {
     return await collectionShelter.find({}).toArray();
 }
@@ -29,6 +31,35 @@ export async function getContactPerson() {
     return await collectionContactPerson.find({}).toArray();
 }
 
+export async function getContactPersonById(id: number) {
+    try {
+        const contactPerson: ContactPerson[] = await collectionContactPerson.find({ id: id }).toArray();
+
+        if (contactPerson.length === 0) {
+            throw new Error(`ContactPerson with ID ${id} not found`);
+        }
+
+        return contactPerson;
+    } catch (error) {
+        throw new Error(`Error fetching contact person: ${error}`);
+    }
+}
+
+/* Edit */
+export async function updateShelterData(shelterId : number, updatedData : AnimalShelter) {
+    try {
+        await collectionShelter.updateOne(
+            { id: shelterId },
+            { $set: updatedData }
+        );
+        return true;
+    } catch (error) {
+        console.error("Error updating shelter data:", error);
+        return false;
+    }
+}
+
+/* Api */
 export async function loadSheltersFromApi() {
     const shelters : AnimalShelter[] = await getShelters();
     if (shelters.length == 0) {
@@ -48,6 +79,7 @@ export async function loadContactPersonsFromApi() {
     }
 }
 
+/* Connect exit */
 export async function connect() {
     try {
         await createInitialUsers()
@@ -61,6 +93,17 @@ export async function connect() {
     }
 }
 
+async function exit() {
+    try {
+        await client.close();
+        console.log("Disconnected from database");
+    } catch (error) {
+        console.error("An error occurred while disconnecting from the database:", error);
+    }
+    process.exit(0);
+}
+
+/* Login */
 async function createInitialUsers() {
     if (await userCollection.countDocuments() > 0) {
         return;
@@ -87,39 +130,34 @@ async function createInitialUsers() {
     });
 }
 
-async function exit() {
-    try {
-        await client.close();
-        console.log("Disconnected from database");
-    } catch (error) {
-        console.error("An error occurred while disconnecting from the database:", error);
+export async function login(email: string, password: string) {
+    if (email === "" || password === "") {
+        throw new Error("Email and password required");
     }
-    process.exit(0);
-}
-
-export async function updateShelterData(shelterId : number, updatedData : AnimalShelter) {
-    try {
-        await collectionShelter.updateOne(
-            { id: shelterId },
-            { $set: updatedData }
-        );
-        return true;
-    } catch (error) {
-        console.error("Error updating shelter data:", error);
-        return false;
-    }
-}
-
-export async function getContactPersonById(id: number) {
-    try {
-        const contactPerson: ContactPerson[] = await collectionContactPerson.find({ id: id }).toArray();
-
-        if (contactPerson.length === 0) {
-            throw new Error(`ContactPerson with ID ${id} not found`);
+    let user : User | null = await userCollection.findOne<User>({email: email});
+    if (user) {
+        if (await bcrypt.compare(password, user.password!)) {
+            return user;
+        } else {
+            throw new Error("Email and password required");
         }
-
-        return contactPerson;
-    } catch (error) {
-        throw new Error(`Error fetching contact person: ${error}`);
+    } else {
+        throw new Error("Email and password required");
     }
+}
+
+export async function addNewUser(email: string, password: string) {
+    if (email === "" || password === "") {
+        throw new Error("Email and password required");
+    }
+    const users : User | null = await userCollection.findOne({email : email});
+    if (users) {
+        throw new Error("User e-mail already exist");
+    } else {
+        await userCollection.insertOne({
+            email: email,
+            password: await bcrypt.hash(password , saltRounds),
+            role: "USER"
+        });
+    }  
 }

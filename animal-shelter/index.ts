@@ -1,8 +1,12 @@
 import express, { Express } from "express";
 import dotenv from "dotenv";
 import path from "path";
-import { AnimalShelter, ContactPerson } from "./types";
-import { connect, getContactPerson, getContactPersonById, getFilteredShelters, getShelters, updateShelterData } from "./database";
+import { AnimalShelter, ContactPerson, User } from "./types";
+import { addNewUser, connect, getContactPerson, getContactPersonById, getFilteredShelters, getShelters, login, updateShelterData } from "./database";
+import { title } from "process";
+import session from "./session";
+import { secureMiddleware } from "./secureMiddleware";
+import { flashMiddleware } from "./flashMiddleware";
 
 dotenv.config();
 
@@ -12,11 +16,14 @@ app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
+app.use(session);
+app.use(flashMiddleware);
+
 app.set('views', path.join(__dirname, "views"));
 
 app.set("port", process.env.PORT || 3000);
 
-app.get("/", async (req, res) => {
+app.get("/", secureMiddleware, async (req, res) => {
 
     const q = typeof req.query.q === 'string' ? req.query.q : "";
     const sortField = typeof req.query.sortField === "string" ? req.query.sortField : "id";
@@ -32,7 +39,7 @@ app.get("/", async (req, res) => {
     })
 });
 
-app.get("/animalshelter/:id", async (req, res) => {
+app.get("/animalshelter/:id", secureMiddleware, async (req, res) => {
     let animalShelterJson : AnimalShelter[] = await getShelters();
 
     const selectedShelterIndex = parseInt(req.params.id)
@@ -50,7 +57,7 @@ app.get("/animalshelter/:id", async (req, res) => {
     })
 })
 
-app.get("/contactpersons", async (req, res) => {
+app.get("/contactpersons", secureMiddleware, async (req, res) => {
     let contactPersonJson : ContactPerson[]= await getContactPerson();
 
     const q : number = parseInt(typeof req.query.q === 'string' ? req.query.q : "");
@@ -71,7 +78,7 @@ app.get("/contactpersons", async (req, res) => {
     })
 })
 
-app.get("/editshelter/:id", async (req, res) => {
+app.get("/editshelter/:id", secureMiddleware, async (req, res) => {
     let animalShelterJson : AnimalShelter[] = await getShelters();
 
     const selectedShelterIndex = parseInt(req.params.id)
@@ -81,10 +88,16 @@ app.get("/editshelter/:id", async (req, res) => {
     }
 
     const selectedShelter = animalShelterJson[selectedShelterIndex-1]
-    res.render("editShelter", {
-        title: "Animal Shelter Details",
-        selectedShelter : selectedShelter
-    })
+
+    if (req.session.user?.role !== "ADMIN") {
+        res.redirect('/')
+    }
+    else {
+        res.render("editShelter", {
+            title: "Animal Shelter Details",
+            selectedShelter : selectedShelter
+        })
+    }
 })
 
 app.post('/editshelter/:id', async (req, res) => {
@@ -110,6 +123,59 @@ app.post('/editshelter/:id', async (req, res) => {
 
         res.redirect(`/animalshelter/${shelterId}`)
 })
+
+app.get("/login", (req, res) => {
+    if (req.session.user) {
+        res.redirect('/')
+    }
+    else {
+        res.render("login", {
+            title: "Login",
+            user: req.session.user
+        });
+    }
+});
+
+app.post("/login", async(req, res) => {
+    const email : string = req.body.email;
+    const password : string = req.body.password;
+    try {
+        let user : User = await login(email, password);
+        delete user.password; 
+        req.session.user = user;
+        req.session.message = {type: "success", message: "Login successful"};
+        res.redirect("/");
+    } catch (e : any) {
+        req.session.message = {type: "error", message: e.message};
+        res.redirect("/login");
+    }
+});
+
+app.post("/logout", async(req, res) => {
+    req.session.destroy(() => {
+        res.redirect("/login");
+    });
+});
+
+app.post("/register", async(req, res) => {
+    const email : string = req.body.registerEmail;
+    const password : string = req.body.registerPassword;
+    try {
+        await addNewUser(email, password)
+        req.session.message = {type: "success", message: "User Registration Successful"};
+        res.redirect("/login");
+    } catch (e : any) {
+        req.session.message = {type: "error", message: e.message};
+        res.redirect("/login");
+    }
+});
+
+app.use((req, res) => {
+    res.status(404).render("404", { 
+        title: "404 - Page Not Found",
+        user: req.session.user
+    });
+});
 
 app.listen(app.get("port"), async() => {
     try {

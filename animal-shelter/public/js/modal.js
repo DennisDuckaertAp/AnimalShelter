@@ -70,14 +70,6 @@ for (let i = 0; i < buttons.length; i++) {
     };
 }
 
-// click event for closing modal (X button)
-//for (let i = 0; i < spans.length; i++) {
-//    spans[i].onclick = function(e) {
-//        e.preventDefault();
-//        closeModal(i);
-//    };
-//}
-
 // click event for closing modal (dark background)
 window.onclick = function(event) {
     for (let i = 0; i < modals.length; i++) {
@@ -86,3 +78,23 @@ window.onclick = function(event) {
         }
     }
 };
+
+// Registration and Login switcher
+document.addEventListener('DOMContentLoaded', function () {
+    const loginForm = document.getElementById('loginForm');
+    const registerForm = document.getElementById('registerForm');
+    const switchToRegister = document.getElementById('switchToRegister');
+    const switchToLogin = document.getElementById('switchToLogin');
+
+    switchToRegister.addEventListener('click', function (event) {
+        event.preventDefault();
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    });
+
+    switchToLogin.addEventListener('click', function (event) {
+        event.preventDefault();
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+    });
+});       

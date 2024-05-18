@@ -11,7 +11,24 @@
     <title><%= title %></title>
 </head>
 <body>
-    
     <header>
-        <h2>Compassionate Animal Shelter Management System</h2>
+        <h2 class="headerTitle">Compassionate Animal Shelter Management System</h2>
+        <% if (user) { %>
+            <h2 class="popup" onclick="myFunction()">
+                <%= user.email %>
+                <span class="popuptext" id="myPopup">
+                    <form action="/logout" method="post">
+                        <button type="submit">Logout</button>
+                    </form>
+                </span>
+            </h2>
+        <% } %>
+
+        <script>
+            // When the user clicks on div, open the popup
+            function myFunction() {
+              var popup = document.getElementById("myPopup");
+              popup.classList.toggle("show");
+            }
+        </script>
     </header>

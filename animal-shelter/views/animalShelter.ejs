@@ -65,11 +65,13 @@
                         </article>
                     </a>
                 </section>
-                <section>
-                    <button>
-                        <a href="/editShelter/<%= selectedShelter.id %>" class="edit-button">Edit Shelter</a>
-                    </button>
-                </section>
+                <% if (user?.role === "ADMIN") { %>
+                    <section>
+                        <button>
+                            <a href="/editShelter/<%= selectedShelter.id %>" class="edit-button">Edit Shelter</a>
+                        </button>
+                    </section>
+                <% } %>
             </article>
         </section>        
         <%- include("partials/footer") %>

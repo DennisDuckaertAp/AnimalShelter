@@ -16,7 +16,10 @@ body {
   margin: 0;
   padding: 0;
 }
-
+header {
+  display: flex;
+  justify-content: space-between;
+}
 a:hover {
   text-shadow: 0 0 10px #fff;
   transition: text-shadow 0.3s ease;
@@ -223,10 +226,32 @@ main {
 
 /* 404 Page Styles */
 .card404 {
-  width: 1000px;
+  width: 700px;
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+/* Error message style */
+.error {
+  margin-left: 30px;
+  color: dimgrey; /* Red color for error messages */
+  font-weight:300;
+  /* Add any additional styles you want for error messages */
+  animation: fadeOut 3s forwards; /* Fade out animation with a duration of 3 seconds */
+}
+
+.success {
+  margin-left: 23px;
+  color: rgb(98, 177, 122); /* Red color for error messages */
+  font-weight:300;
+  /* Add any additional styles you want for error messages */
+  animation: fadeOut 3s forwards; /* Fade out animation with a duration of 3 seconds */
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 /* Modal Styles */
@@ -288,6 +313,48 @@ main {
   color: darkgrey;
 }
 
+/* Pop Up */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.popup .popuptext {
+  visibility: hidden;
+  width: 160px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  top: 125%;
+  left: 50%;
+  margin-left: -100px;
+}
+
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+
 /* Media Query */
 .cardAnimalShelter {
   width: 80%;
@@ -296,8 +363,11 @@ main {
   display: none; 
 }
 @media (max-width: 768px) {
-  header {
+  .headerTitle {
     display: none;
+  }
+  header {
+    justify-content: right;
   }
   body {
     display: block;
@@ -356,4 +426,8 @@ main {
   .main-top h2 {
     margin: 0px;
   }
+  .card404 > section:last-child {
+    flex-direction: column;
+  }
+  
 }

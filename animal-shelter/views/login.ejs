@@ -1,0 +1,55 @@
+<%- include("partials/header") %>
+<%- include("partials/aside") %>
+<li><a href="/">Home</a></li>
+<li><a href="/animalshelter/1">Animal shelter</a></li>
+<li><a href="/contactpersons">Contact persons</a></li>
+</ul>
+</section>
+
+</aside>
+<main>
+    <section class="main-top">
+        <h2>Login or Registration page</h2>
+    </section>
+    <section class="main-body" style="width: 280px; padding: 0px 20px;">
+        <% if (!message) { %>
+            <br>
+        <% } %>  
+        <% if (message) { %>
+            <p class="<%= message.type %>"><%= message.message %></p>
+        <% } %>    
+        <article class="card">
+            <!-- Login Form -->
+            <div id="loginForm">
+                <h1>Log In</h1><br>
+                <form action="/login" method="post">
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password"/>
+                    </div>
+                    <button type="submit">Login</button>
+                </form><br>
+                <p>Don't have an account? <a href="#" id="switchToRegister">Register here</a></p>
+            </div>
+            <!-- Registration Form -->
+            <div id="registerForm" style="display: none;">
+                <h1>Register</h1><br>
+                <form action="/register" method="post">
+                    <div class="form-group">
+                        <label for="registerEmail">Email:</label>
+                        <input type="email" id="registerEmail" name="registerEmail"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Password:</label>
+                        <input type="password" id="registerPassword" name="registerPassword"/>
+                    </div>
+                    <button type="submit">Register</button>
+                </form><br>
+                <p>Already have an account? <a href="#" id="switchToLogin">Login here</a></p>
+            </div>
+        </article>
+    </section>
