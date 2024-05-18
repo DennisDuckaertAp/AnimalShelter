@@ -139,10 +139,10 @@ export async function login(email: string, password: string) {
         if (await bcrypt.compare(password, user.password!)) {
             return user;
         } else {
-            throw new Error("Email and password required");
+            throw new Error("Wrong email and/or password");
         }
     } else {
-        throw new Error("Email and password required");
+        throw new Error("Wrong email and/or password");
     }
 }
 
